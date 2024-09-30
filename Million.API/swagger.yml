@@ -1,0 +1,514 @@
+openapi: 3.0.1
+info:
+  title: Million.API
+  version: '1.0'
+paths:
+  /api/Owner:
+    get:
+      tags:
+        - Owner
+      summary: Retrieves all owners.
+      responses:
+        '200':
+          description: Returns the list of owners.
+    post:
+      tags:
+        - Owner
+      summary: Creates a new owner.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - Address
+                - Birthday
+                - Name
+              type: object
+              properties:
+                Name:
+                  type: string
+                Address:
+                  type: string
+                Birthday:
+                  type: string
+                  format: date-time
+                photo:
+                  type: string
+                  format: binary
+            encoding:
+              Name:
+                style: form
+              Address:
+                style: form
+              Birthday:
+                style: form
+              photo:
+                style: form
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: The owner was successfully created.
+        '400':
+          description: If the provided data is invalid.
+    put:
+      tags:
+        - Owner
+      summary: Updates an existing owner.
+      parameters:
+        - name: id
+          in: query
+          description: The unique identifier of the owner to be updated.
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The DTO containing updated information for the owner.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OwnerDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/OwnerDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/OwnerDto'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: The owner was successfully updated.
+        '400':
+          description: If the update operation failed due to invalid model state or other reasons.
+  /api/Owner/{id}:
+    get:
+      tags:
+        - Owner
+      summary: Retrieves an owner by their ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the owner to retrieve.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Returns the owner with the specified ID.
+        '404':
+          description: If the owner is not found.
+    delete:
+      tags:
+        - Owner
+      summary: Deletes an owner by their ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the owner to delete.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: The owner was successfully deleted.
+        '400':
+          description: If the deletion operation failed.
+  /api/Property:
+    get:
+      tags:
+        - Property
+      summary: Retrieves all properties.
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Property
+      summary: Creates a new property.
+      requestBody:
+        description: The DTO containing the property details.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - Property
+      summary: Updates an existing property.
+      parameters:
+        - name: id
+          in: query
+          description: The unique identifier of the property to be updated.
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The DTO containing updated information for the property.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PropertyDto'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: The property was successfully updated.
+        '400':
+          description: If the update operation failed.
+  /api/Property/{id}:
+    get:
+      tags:
+        - Property
+      summary: Retrieves a property by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property to retrieve.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+    delete:
+      tags:
+        - Property
+      summary: Deletes a property by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property to delete.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /api/Property/filter:
+    get:
+      tags:
+        - Property
+      summary: Filters properties based on specified criteria.
+      parameters:
+        - name: MinPrice
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: MaxPrice
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Year
+          in: query
+          schema:
+            type: integer
+            format: int32
+        - name: Name
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns the filtered list of properties.
+  /api/PropertyImage:
+    get:
+      tags:
+        - PropertyImage
+      summary: Retrieves all property images.
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - PropertyImage
+      summary: Creates a new property image.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - IdProperty
+              type: object
+              properties:
+                IdProperty:
+                  type: integer
+                  format: int32
+                Enabled:
+                  type: boolean
+                photo:
+                  type: string
+                  format: binary
+            encoding:
+              IdProperty:
+                style: form
+              Enabled:
+                style: form
+              photo:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /api/PropertyImage/{id}:
+    get:
+      tags:
+        - PropertyImage
+      summary: Retrieves a property image by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property image to retrieve.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - PropertyImage
+      summary: Updates an existing property image.
+      parameters:
+        - name: id
+          in: path
+          description: The unique identifier of the property image to be updated.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The property image DTO containing updated information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyImageDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PropertyImageDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PropertyImageDto'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: The property image was successfully updated.
+        '400':
+          description: If the update operation failed due to validation errors or if the specified property image was not found.
+    delete:
+      tags:
+        - PropertyImage
+      summary: Deletes a property image by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property image to delete.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+  /api/PropertyTrace:
+    get:
+      tags:
+        - PropertyTrace
+      summary: Retrieves all property traces.
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - PropertyTrace
+      summary: Creates a new property trace.
+      requestBody:
+        description: The DTO containing details of the new property trace.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+      responses:
+        '200':
+          description: OK
+  /api/PropertyTrace/{id}:
+    get:
+      tags:
+        - PropertyTrace
+      summary: Retrieves a property trace by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property trace to retrieve.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+    put:
+      tags:
+        - PropertyTrace
+      summary: Updates an existing property trace.
+      parameters:
+        - name: id
+          in: path
+          description: The unique identifier of the property trace to be updated.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        description: The property trace DTO containing updated information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PropertyTraceDto'
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: The property trace was successfully updated.
+        '400':
+          description: If the update operation failed due to validation errors or if the specified property trace was not found.
+    delete:
+      tags:
+        - PropertyTrace
+      summary: Deletes a property trace by its ID.
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the property trace to delete.
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    OwnerDto:
+      required:
+        - address
+        - birthday
+        - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        address:
+          minLength: 1
+          type: string
+        birthday:
+          type: string
+          format: date-time
+      additionalProperties: false
+    PropertyDto:
+      required:
+        - address
+        - codeInternal
+        - idOwner
+        - name
+        - price
+        - year
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        address:
+          minLength: 1
+          type: string
+        price:
+          minimum: 0.01
+          type: integer
+          format: int32
+        codeInternal:
+          minLength: 1
+          type: string
+        year:
+          maximum: 2024
+          minimum: 1800
+          type: integer
+          format: int32
+        idOwner:
+          type: integer
+          format: int32
+      additionalProperties: false
+    PropertyImageDto:
+      required:
+        - idProperty
+      type: object
+      properties:
+        idProperty:
+          type: integer
+          format: int32
+        enabled:
+          type: boolean
+      additionalProperties: false
+    PropertyTraceDto:
+      required:
+        - dateSale
+        - idProperty
+        - name
+        - tax
+        - value
+      type: object
+      properties:
+        dateSale:
+          type: string
+          format: date-time
+        name:
+          minLength: 1
+          type: string
+        value:
+          minimum: 0.01
+          type: integer
+          format: int32
+        tax:
+          minimum: 0.01
+          type: integer
+          format: int32
+        idProperty:
+          type: integer
+          format: int32
+      additionalProperties: false
