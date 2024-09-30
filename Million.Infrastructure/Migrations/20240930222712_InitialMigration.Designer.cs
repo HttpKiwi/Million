@@ -11,7 +11,7 @@ using Million.Infrastructure.Data;
 namespace Million.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240930202534_InitialMigration")]
+    [Migration("20240930222712_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -41,6 +41,22 @@ namespace Million.Infrastructure.Migrations
                     b.HasKey("IdOwner");
 
                     b.ToTable("Owner");
+
+                    b.HasData(
+                        new
+                        {
+                            IdOwner = 1,
+                            Address = "123 Elm Street",
+                            Birthday = new DateTime(1975, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "John Doe"
+                        },
+                        new
+                        {
+                            IdOwner = 2,
+                            Address = "456 Oak Avenue",
+                            Birthday = new DateTime(1980, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Jane Smith"
+                        });
                 });
 
             modelBuilder.Entity("Million.Domain.Enitities.Property", b =>
@@ -72,6 +88,28 @@ namespace Million.Infrastructure.Migrations
                     b.HasIndex("IdOwner");
 
                     b.ToTable("Property");
+
+                    b.HasData(
+                        new
+                        {
+                            IdProperty = 1,
+                            Address = "789 Pine Road",
+                            CodeInternal = "MODV123",
+                            IdOwner = 1,
+                            Name = "Modern Villa",
+                            Price = 500000,
+                            Year = 2015
+                        },
+                        new
+                        {
+                            IdProperty = 2,
+                            Address = "10 Ocean Drive",
+                            CodeInternal = "BFCD456",
+                            IdOwner = 2,
+                            Name = "Beachfront Condo",
+                            Price = 300000,
+                            Year = 2018
+                        });
                 });
 
             modelBuilder.Entity("Million.Domain.Enitities.PropertyImage", b =>
@@ -94,6 +132,20 @@ namespace Million.Infrastructure.Migrations
                     b.HasIndex("IdProperty");
 
                     b.ToTable("PropertyImage");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPropertyImage = 1,
+                            Enabled = true,
+                            IdProperty = 1
+                        },
+                        new
+                        {
+                            IdPropertyImage = 2,
+                            Enabled = true,
+                            IdProperty = 2
+                        });
                 });
 
             modelBuilder.Entity("Million.Domain.Enitities.PropertyTrace", b =>
@@ -122,6 +174,26 @@ namespace Million.Infrastructure.Migrations
                     b.HasIndex("IdProperty");
 
                     b.ToTable("PropertyTrace");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPropertyTrace = 1,
+                            DateSale = new DateTime(2020, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdProperty = 1,
+                            Name = "Initial Sale",
+                            Tax = 45000,
+                            Value = 450000
+                        },
+                        new
+                        {
+                            IdPropertyTrace = 2,
+                            DateSale = new DateTime(2021, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IdProperty = 2,
+                            Name = "Initial Sale",
+                            Tax = 28000,
+                            Value = 280000
+                        });
                 });
 
             modelBuilder.Entity("Million.Domain.Enitities.Property", b =>

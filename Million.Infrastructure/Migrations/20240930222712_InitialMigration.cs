@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Million.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -93,6 +95,42 @@ namespace Million.Infrastructure.Migrations
                         principalTable: "Property",
                         principalColumn: "IdProperty",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Owner",
+                columns: new[] { "IdOwner", "Address", "Birthday", "Name", "Photo" },
+                values: new object[,]
+                {
+                    { 1, "123 Elm Street", new DateTime(1975, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "John Doe", null },
+                    { 2, "456 Oak Avenue", new DateTime(1980, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jane Smith", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Property",
+                columns: new[] { "IdProperty", "Address", "CodeInternal", "IdOwner", "Name", "Price", "Year" },
+                values: new object[,]
+                {
+                    { 1, "789 Pine Road", "MODV123", 1, "Modern Villa", 500000, 2015 },
+                    { 2, "10 Ocean Drive", "BFCD456", 2, "Beachfront Condo", 300000, 2018 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PropertyImage",
+                columns: new[] { "IdPropertyImage", "Enabled", "File", "IdProperty" },
+                values: new object[,]
+                {
+                    { 1, true, null, 1 },
+                    { 2, true, null, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PropertyTrace",
+                columns: new[] { "IdPropertyTrace", "DateSale", "IdProperty", "Name", "Tax", "Value" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2020, 7, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Initial Sale", 45000, 450000 },
+                    { 2, new DateTime(2021, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, "Initial Sale", 28000, 280000 }
                 });
 
             migrationBuilder.CreateIndex(
